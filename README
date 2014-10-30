@@ -1,0 +1,47 @@
+Description
+===========
+TFTP server is developed in golang with following features
+1) The files are stored in memory at server side.
+2) UDP protocol is used for communication between tftp client and server.
+3) Multiple clients can connect to server simultaneously and perform file get and put 
+operations.
+4) Files being written to server are not available till files are completely transferred.
+
+Building
+========
+1) Create directory tftp and copy files main.go, const_dec.go in a directory 'tftp'
+2) Run command 'go build' to create binary named tftp
+
+Running the tftp server
+=======================
+Usage: ./tftp localhost:<port#>
+Example: ./tftp localhost:9999
+
+Testing
+=======
+I have used following opensource TFTP client for testing my golang - TFTP server 
+http://www.opensource.apple.com/source/network_cmds/network_cmds-77/tftp.tproj/
+
+Following test cases were executed
+1) Transferring multiple files to server.
+2) Receiving multiple files from server.
+3) Closing client prematurely while file transfer.
+4) Trying to 'get' file which is not present at server side.
+5) Trying to 'put' multiple files with same name to server.
+
+Notes
+=====
+1) The data packet received from client is directly stored (without conversion) in to 
+memory and so it does not matter which mode (netascii or octet) is used to 'put' 
+and 'get' files. 
+But if file is 'put' using octet and same file is 'get' using netascii it will not work, 
+the file received at client end will be corrupted. 
+2) ISSUE: The tftp client I used for testing somehow created (overwrites if present) 
+an empty file even though the file is not present at server side.
+
+Example: if server does not have file test.txt and if you Run
+./tftp_client <ip:port>
+tftp> get test.txt
+
+It will create (or overwrite if present) an empty test.txt at client side.
+
