@@ -45,3 +45,5 @@ tftp> get test.txt
 
 It will create (or overwrite if present) an empty test.txt at client side.
 
+GoodLuck!
+
